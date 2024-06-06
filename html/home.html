@@ -237,7 +237,11 @@
 
                     // 清空上一行数据的统计值
                     let beforeData = this[`tableData_${table_index}`][this[`selectTime_${table_index}`] - 1]
-                    this[`total_${table_index}`] -= beforeData.total
+                    if(beforeData.selectType === 'B'){
+                        this[`total_${table_index}`] = beforeData.total - beforeData.sum_B + beforeData.sum_W
+                    }else{
+                        this[`total_${table_index}`] = beforeData.total - beforeData.sum_W + beforeData.sum_B
+                    }
                     beforeData.total = ''
                     beforeData.selectType = ''
 
