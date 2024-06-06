@@ -27,7 +27,7 @@
                         <template slot-scope="scope">
                             <el-popover
                                 v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_1[scope.$index - 1].selectType && scope.row.selectType == '')"
-                                placement="top" max-width="70">
+                                placement="top">
                                 <div style="text-align: center; margin: 0">
                                     <el-button size="mini" type="text"
                                         @click="selectDot(scope.row, 'B', scope.$index, 1)"><span
@@ -74,7 +74,7 @@
                         <template slot-scope="scope">
                             <el-popover
                                 v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_2[scope.$index - 1].selectType && scope.row.selectType == '')"
-                                placement="top" max-width="70">
+                                placement="top">
                                 <div style="text-align: center; margin: 0">
                                     <el-button size="mini" type="text"
                                         @click="selectDot(scope.row, 'B', scope.$index, 2)"><span
@@ -121,7 +121,7 @@
                         <template slot-scope="scope">
                             <el-popover size="mini"
                                 v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_3[scope.$index - 1].selectType && scope.row.selectType == '')"
-                                placement="top" width="50" trigger="click">
+                                placement="top" trigger="click">
                                 <div style="text-align: center; margin: 0">
                                     <el-button size="mini" type="text"
                                         @click="selectDot(scope.row, 'B', scope.$index, 3)"><span
