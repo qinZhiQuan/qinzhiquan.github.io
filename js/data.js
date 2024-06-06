@@ -8,7 +8,9 @@ const table_length_1 = 10 // 表格长度
 const table_length_2 = 10 // 表格长度
 const table_length_3 = 10 // 表格长度
 
-const max_total_3 = 20 // 表格三最大统计值 超过后归零
+const max_total_3 = 2 // 表格三最大统计值 超过后归零
+const max_number = 256 // 表格一最大统计值 超过后归一
+const isShowOther = false // 表格是否显示中间列
 
 // 表格数据 黑色：B， 白色：W 空白：-
 const data1 = [
@@ -134,7 +136,6 @@ function settableData(data, index, length) {
             sum_W: '', // 白色
             difference: '', // 差值
             total: '', // 统计
-            isShowNum: false, // 是否显示数字
         }
         let column = []
         let tyleList = row.split('')
