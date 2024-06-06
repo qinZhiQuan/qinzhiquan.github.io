@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div id="app" class="container">
+    <div id="app" class="container" v-cloak>
         <h3>{{title}}</h3>
         <div class="btn-group">
             <el-button size="mini" type="primary" @click="revocation()">撤销</el-button>
@@ -21,7 +21,7 @@
         <el-tabs size="mini" v-model="activeName" @tab-click="handleClick" type="card">
             <el-tab-pane label="A" name="table_1" lazy>
                 <el-table border :data="tableData_1" style="width: 100%; text-align: center;" max-height="500">
-                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    <el-table-column label="序号" type="index" width="50" fixed="left">
                     </el-table-column>
                     <el-table-column prop="selectType" label="选定" header-align="center">
                         <template slot-scope="scope">
@@ -68,7 +68,7 @@
             </el-tab-pane>
             <el-tab-pane label="B" name="table_2" lazy>
                 <el-table border :data="tableData_2" style="width: 100%; text-align: center;" max-height="500">
-                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    <el-table-column label="序号" type="index" width="50" fixed="left">
                     </el-table-column>
                     <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
                         <template slot-scope="scope">
@@ -115,7 +115,7 @@
             </el-tab-pane>
             <el-tab-pane label="C" name="table_3" lazy>
                 <el-table border :data="tableData_3" style="width: 100%; text-align: center;" max-height="500">
-                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    <el-table-column label="序号" type="index" width="50" fixed="left">
                     </el-table-column>
                     <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
                         <template slot-scope="scope">
@@ -377,11 +377,11 @@
                                 }
                             }
 
-                            // 大于64归一
+                            // 大于max_number归一
                             if (!row[`del_${i}`] && next_row[i] != '-') {
                                 if (row[i] != '-' && row[i] != type) {
                                     let number = row[`num_${i}`] * 2
-                                    next_row[`num_${i}`] = number > 64 ? 1 : number
+                                    next_row[`num_${i}`] = number > max_number ? 1 : number
                                 } else {
                                     next_row[`num_${i}`] = 1
                                 }

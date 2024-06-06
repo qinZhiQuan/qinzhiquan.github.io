@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <script src="../js/vue.js"></script>
+    <link rel="stylesheet" href="../js/element-ui/lib/theme-chalk/index.css">
+    <script src="../js/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h3>{{title}}</h3>
+        <div class="btn-group">
+            <el-button size="mini" type="primary" @click="revocation()">撤销</el-button>
+            <el-button size="mini" @click="reset()">重置</el-button>
+        </div>
+        <el-tabs size="mini" v-model="activeName" @tab-click="handleClick" type="card">
+            <el-tab-pane label="A" name="table_1" lazy>
+                <el-table border :data="tableData_1" style="width: 100%; text-align: center;" max-height="500">
+                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    </el-table-column>
+                    <el-table-column prop="selectType" label="选定" header-align="center">
+                        <template slot-scope="scope">
+                            <el-popover
+                                v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_1[scope.$index - 1].selectType && scope.row.selectType == '')"
+                                placement="top">
+                                <div style="text-align: center; margin: 0">
+                                    <el-button size="mini" type="text"
+                                        @click="selectDot(scope.row, 'B', scope.$index, 1)"><span
+                                            class="dot">●</span></el-button>
+                                    <el-button type="text" size="mini"
+                                        @click="selectDot(scope.row, 'W', scope.$index, 1)"><span
+                                            class="dot">○</span></el-button>
+                                </div>
+                                <el-button size="mini" type="primary" slot="reference">选定</el-button>
+                            </el-popover>
+                            <div class="dot_box" v-else>
+                                <span class="dot" v-if="scope.row.selectType == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row.selectType == 'W'">○</span>
+                            </div>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" v-for="(column, index) in tableColumns_1" :key="index"
+                        :prop="column.prop" :label="column.label" max-width="50" header-align="center">
+                        <template slot-scope="scope">
+                            <div class="dot_box">
+                                <span class="dot" v-if="scope.row[column.prop] == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row[column.prop] == 'W'">○</span>
+                                <span class="dot_number"
+                                    v-if="scope.row[column.prop] != '-'">{{scope.row[`num_${column.prop}`]}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_B" label="黑色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_W" label="白色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="difference" label="差值" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="total" label="统计" header-align="center" fixed="right">
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="B" name="table_2" lazy>
+                <el-table border :data="tableData_2" style="width: 100%; text-align: center;" max-height="500">
+                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    </el-table-column>
+                    <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
+                        <template slot-scope="scope">
+                            <el-popover
+                                v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_2[scope.$index - 1].selectType && scope.row.selectType == '')"
+                                placement="top">
+                                <div style="text-align: center; margin: 0">
+                                    <el-button size="mini" type="text"
+                                        @click="selectDot(scope.row, 'B', scope.$index, 2)"><span
+                                            class="dot">●</span></el-button>
+                                    <el-button type="text" size="mini"
+                                        @click="selectDot(scope.row, 'W', scope.$index, 2)"><span
+                                            class="dot">○</span></el-button>
+                                </div>
+                                <el-button size="mini" type="primary" slot="reference">选定</el-button>
+                            </el-popover>
+                            <div class="dot_box" v-else>
+                                <span class="dot" v-if="scope.row.selectType == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row.selectType == 'W'">○</span>
+                            </div>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" v-for="(column, index) in tableColumns_2" :key="index"
+                        :prop="column.prop" :label="column.label" max-width="50" header-align="center">
+                        <template slot-scope="scope">
+                            <div class="dot_box">
+                                <span class="dot" v-if="scope.row[column.prop] == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row[column.prop] == 'W'">○</span>
+                                <span class="dot_number"
+                                    v-if="scope.row[column.prop] != '-'">{{scope.row[`num_${column.prop}`]}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_B" label="黑色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_W" label="白色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="difference" label="差值" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="total" label="统计" header-align="center" fixed="right">
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="C" name="table_3" lazy>
+                <el-table border :data="tableData_3" style="width: 100%; text-align: center;" max-height="500">
+                    <el-table-column v-if="isShowOther" label="序号" type="index" width="50" fixed="left">
+                    </el-table-column>
+                    <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
+                        <template slot-scope="scope">
+                            <el-popover size="mini"
+                                v-if="(!scope.row.selectType && scope.$index == 0) || (scope.$index > 0  && tableData_3[scope.$index - 1].selectType && scope.row.selectType == '')"
+                                placement="top" trigger="click">
+                                <div style="text-align: center; margin: 0">
+                                    <el-button size="mini" type="text"
+                                        @click="selectDot(scope.row, 'B', scope.$index, 3)"><span
+                                            class="dot">●</span></el-button>
+                                    <el-button type="text" size="mini"
+                                        @click="selectDot(scope.row, 'W', scope.$index, 3)"><span
+                                            class="dot">○</span></el-button>
+                                </div>
+                                <el-button size="mini" type="primary" slot="reference">选定</el-button>
+                            </el-popover>
+                            <div class="dot_box" v-else>
+                                <span class="dot" v-if="scope.row.selectType == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row.selectType == 'W'">○</span>
+                            </div>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" v-for="(column, index) in tableColumns_3" :key="index"
+                        :prop="column.prop" :label="column.label" max-width="50" header-align="center">
+                        <template slot-scope="scope">
+                            <div class="dot_box" :class="scope.row[`del_${column.prop}`]? 'strike': ''">
+                                <span class="dot" v-if="scope.row[column.prop] == 'B'">●</span>
+                                <span class="dot" v-else-if="scope.row[column.prop] == 'W'">○</span>
+                                <span class="dot_number"
+                                    v-if="!scope.row[`del_${column.prop}`] && scope.row[column.prop] != '-'">{{scope.row[`num_${column.prop}`]}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_B" label="黑色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column v-if="isShowOther" prop="sum_W" label="白色" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="difference" label="差值" header-align="center" fixed="right">
+                    </el-table-column>
+                    <el-table-column prop="total" label="统计" header-align="center" fixed="right">
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+        </el-tabs>
+
+
+    </div>
+    <script src="../js/data.js"></script>
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    title,
+                    activeName: 'table_1',
+                    isShowOther,
+
+                    tableData_1: [],
+                    tableColumns_1,
+                    total_1: 0,
+                    selectTime_1: 0, // 当前选定次数
+
+                    tableData_2: [],
+                    tableColumns_2,
+                    total_2: 0,
+                    selectTime_2: 0, // 当前选定次数
+
+                    tableData_3: [],
+                    tableColumns_3,
+                    total_3: 0,
+                    selectTime_3: 0, // 当前选定次数
+
+                    del_data: [], // 归零的数据
+
+
+                }
+            },
+            mounted() {
+                this.checkLogin()
+                this.initPage()
+                this.initTableData()
+            },
+            methods: {
+                // 重置
+                reset() {
+                    let table_index = Number(this.activeName.split('_')[1])
+                    switch (table_index) {
+                        case 1:
+                            this.tableData_1 = JSON.parse(JSON.stringify(tableData_1))
+                            this.total_1 = 0
+                            this.selectTime_1 = 0
+                            this.countData(this.tableData_1[0], 1)
+                            break;
+                        case 2:
+                            this.tableData_2 = JSON.parse(JSON.stringify(tableData_2))
+                            this.total_2 = 0
+                            this.selectTime_2 = 0
+                            this.countData(this.tableData_2[0], 2)
+                            break;
+                        case 3:
+                            this.tableData_3 = JSON.parse(JSON.stringify(tableData_3))
+                            this.total_3 = 0
+                            this.selectTime_3 = 0
+                            this.countData(this.tableData_3[0], 3)
+                            break;
+                    }
+                },
+                // 撤销
+                revocation() {
+                    let table_index = Number(this.activeName.split('_')[1])
+                    if (this[`selectTime_${table_index}`] <= 0) {
+                        this.$message({
+                            message: '当前没有可撤销的记录'
+                            , type: 'warning'
+                        })
+                        return
+                    }
+
+                    // 清空上一行数据的统计值
+                    let beforeData = this[`tableData_${table_index}`][this[`selectTime_${table_index}`] - 1]
+                    this[`total_${table_index}`] -= beforeData.total
+                    beforeData.total = ''
+                    beforeData.selectType = ''
+
+                    // 清空当前行数据的下标和值
+                    let rowData = this[`tableData_${table_index}`][this[`selectTime_${table_index}`]]
+                    rowData.sum_B = ''
+                    rowData.sum_W = ''
+                    rowData.difference = ''
+
+
+                    let column_length = 0
+                    switch (table_index) {
+                        case 1:
+                            column_length = table_length_1
+                            break;
+                        case 2:
+                            column_length = table_length_2
+                            break;
+                        case 3:
+                            column_length = table_length_3
+                            break;
+                    }
+                    for (let i = 1; i <= column_length; i++) {
+                        rowData[`num_${i}`] = ''
+
+                        // 如果上一行未归零 当前行取消归零
+                        if (!beforeData[`del_${i}`]) {
+                            rowData[`del_${i}`] = false
+                            this.setNoDel(this[`tableData_${table_index}`], [this[`selectTime_${table_index}`]], i, column_length)
+                        }
+                    }
+
+
+                    this[`selectTime_${table_index}`] -= 1
+                },
+                // 初始化
+                initPage() {
+                    if (bg) {
+                        document.body.style.backgroundImage = `url(.${bg})`;
+                        document.body.style.backgroundRepeat = "no-repeat";
+                        document.body.style.backgroundSize = "100% 100%";
+                        document.body.style.backgroundAttachment = "fixed";
+                        document.body.style.backgroundPosition = "center";
+                    }
+                    if (bgColor) {
+                        document.body.style.backgroundColor = bgColor;
+                    }
+                },
+                // 判断是否已登录
+                checkLogin() {
+                    if (!localStorage.getItem('token')) {
+                        window.location.href = '../index.html'
+                    }
+                },
+                handleClick(tab, event) {
+                },
+                // 初始化表格数据
+                initTableData() {
+                    document.title = title;
+                    this.tableData_1 = JSON.parse(JSON.stringify(tableData_1))
+                    this.tableData_2 = JSON.parse(JSON.stringify(tableData_2))
+                    this.tableData_3 = JSON.parse(JSON.stringify(tableData_3))
+
+                    this.countData(this.tableData_1[0], 1)
+                    this.countData(this.tableData_2[0], 2)
+                    this.countData(this.tableData_3[0], 3)
+                },
+
+                // 计算黑色、白色、差值
+                countData(row, table_index) {
+                    let sum_B = 0
+                    let sum_W = 0
+                    let difference = 0
+                    for (let i = 0; i < this[`tableColumns_${table_index}`].length; i++) {
+                        if (!row[`del_${this[`tableColumns_${table_index}`][i].prop}`] && row[this[`tableColumns_${table_index}`][i].prop] == 'B') {
+                            sum_B += row[`num_${this[`tableColumns_${table_index}`][i].prop}`]
+                        }
+                        else if (!row[`del_${this[`tableColumns_${table_index}`][i].prop}`] && row[this[`tableColumns_${table_index}`][i].prop] == 'W') {
+                            sum_W += row[`num_${this[`tableColumns_${table_index}`][i].prop}`]
+                        }
+                    }
+                    if (sum_B > sum_W) {
+                        difference = '黑' + (sum_B - sum_W)
+                    }
+                    else if (sum_B < sum_W) {
+                        difference = '白' + (sum_W - sum_B)
+                    }
+                    else {
+                        difference = 0
+                    }
+                    this.$set(row, 'sum_B', sum_B)
+                    this.$set(row, 'sum_W', sum_W)
+                    this.$set(row, 'difference', difference)
+                },
+                // 计算统计值
+                countTotal(row, type, table_index) {
+                    let total = 0
+                    if (type == 'B') {
+                        total = row.sum_B - row.sum_W
+                    }
+                    else if (type == 'W') {
+                        total = row.sum_W - row.sum_B
+                    }
+                    this[`total_${table_index}`] += total
+                    row.total = this[`total_${table_index}`]
+                },
+                // 选定
+                selectDot(row, type, row_index, table_index) {
+                    row.selectType = type
+                    let column_length = 0
+                    switch (table_index) {
+                        case 1:
+                            column_length = table_length_1
+                            break;
+                        case 2:
+                            column_length = table_length_2
+                            break;
+                        case 3:
+                            column_length = table_length_3
+                            break;
+                    }
+                    this[`selectTime_${table_index}`]++
+
+                    // 计算统计值
+                    this.countTotal(row, type, table_index)
+
+                    // 判断是否为最后一行
+                    if (this[`tableData_${table_index}`].length - 1 > row_index) {
+                        let next_row = this[`tableData_${table_index}`][row_index + 1]
+
+                        for (let i = 1; i <= column_length; i++) {
+                            // 表格3 判断选择次数
+                            if (table_index == 3 && this.total_3 >= max_total_3) {
+                                // 选定自动归零
+                                if (!row[`del_${i}`] && row[i] == type) {
+                                    this.setDel(this[`tableData_${table_index}`], row_index + 1, i, column_length)
+                                }
+                            }
+
+                            // 大于64归一
+                            if (!row[`del_${i}`] && next_row[i] != '-') {
+                                if (row[i] != '-' && row[i] != type) {
+                                    let number = row[`num_${i}`] * 2
+                                    next_row[`num_${i}`] = number > 64 ? 1 : number
+                                } else {
+                                    next_row[`num_${i}`] = 1
+                                }
+                            }
+                            if (row[`del_${i}`]) {
+                                next_row[`num_${i}`] = 0
+                            }
+                        }
+                        this.countData(next_row, table_index)
+                    }
+                },
+
+                // 归零
+                setDel(data, row, column, column_length) {
+                    for (let i = row, length = data.length; i < length; i++) {
+                        for (let j = 0; j < column_length; j++) {
+                            if (j == column) {
+                                data[i][`del_${j}`] = true
+                                data[i][`num_${j}`] = ''
+                            }
+
+                        }
+
+                    }
+                },
+                // 取消归零
+                setNoDel(data, row, column, column_length) {
+                    for (let i = row, length = data.length; i < length; i++) {
+                        for (let j = 0; j < column_length; j++) {
+                            if (j == column) {
+                                data[i][`del_${j}`] = false
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        })
+    </script>
+</body>
+
+</html>
