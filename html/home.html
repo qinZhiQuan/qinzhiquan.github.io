@@ -68,7 +68,8 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="B" name="table_2" lazy>
-                <el-table ref="tab_2" border :data="tableData_2" style="width: 100%; text-align: center;" max-height="550">
+                <el-table ref="tab_2" border :data="tableData_2" style="width: 100%; text-align: center;"
+                    max-height="550">
                     <el-table-column label="序号" type="index" width="50" fixed="left">
                     </el-table-column>
                     <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
@@ -115,7 +116,8 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="C" name="table_3" lazy>
-                <el-table ref="tab_3" border :data="tableData_3" style="width: 100%; text-align: center;" max-height="550">
+                <el-table ref="tab_3" border :data="tableData_3" style="width: 100%; text-align: center;"
+                    max-height="550">
                     <el-table-column label="序号" type="index" width="50" fixed="left">
                     </el-table-column>
                     <el-table-column prop="selectType" label="选定" header-align="center" fixed="left">
@@ -162,9 +164,12 @@
                 </el-table>
             </el-tab-pane>
         </el-tabs>
+        <div class="btn-group2">
+            <el-button size="mini" type="primary" circle @click="tableScroll(activeName.split('_')[1], -100)">▲</el-button>
+            <el-button size="mini" type="primary" circle @click="tableScroll(activeName.split('_')[1], 100)">▼</el-button>
+        </div>
     </div>
     <script src="../js/data.js"></script>
-    <!-- <script src="../js/xlsx.js"></script> -->
     <script>
         let app = new Vue({
             el: "#app",
@@ -204,6 +209,8 @@
                     const divData = table.bodyWrapper
                     if (divData.clientHeight + divData.scrollTop != divData.scrollHeight) {
                         divData.scrollTop += height
+                    }else {
+                        divData.scrollTop = 0
                     }
                 },
                 // 重置
