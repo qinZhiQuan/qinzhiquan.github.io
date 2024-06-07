@@ -1,6 +1,9 @@
 const title = "计数器系统" // 标题
-const name = 'admin' // 账号
-const password = 'admin' // 密码
+
+// 账号列表
+const accounts = [
+    { name: 'qsl88008', password: 'qsl33800' }
+]
 const bg = './assets/bg.png' // 背景图 
 const bgColor = 'rgba(70,130,180, 0.4)' // 背景色
 
@@ -140,7 +143,7 @@ function setData(oldData) {
                 newData[i] += 'B'
             } else if (oldData[i][j] === '○') {
                 newData[i] += 'W'
-    
+
             } else {
                 newData[i] += '-'
             }

@@ -61,7 +61,8 @@
                     if (this.name == "" || this.password == "") {
                         return this.$message.error("账号或密码不能为空");
                     }
-                    if (this.name == name && this.password == password) {
+                    let isCheck = accounts.findIndex(account=>account.name == this.name && account.password == this.password) != -1
+                    if (isCheck) {
                         this.$message.success("登录成功");
                         localStorage.setItem("token", "123456");
                         setTimeout(() => {
