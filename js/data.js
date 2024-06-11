@@ -2,7 +2,8 @@ const title = "计数器系统" // 标题
 
 // 账号列表
 const accounts = [
-    { name: 'qsl88008', password: 'qsl33800' }
+    { name: 'qsl33800', password: 'qsl146900' },
+    { name: 'qsl88008', password: 'qsl146900' },
 ]
 const bg = './assets/bg.png' // 背景图 
 const bgColor = 'rgba(70,130,180, 0.4)' // 背景色
@@ -224,3 +225,4 @@ function settableData(data, index, length) {
 
     })
 }
+
