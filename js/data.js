@@ -13,7 +13,8 @@ const table_length_1 = 120 // 表格长度
 const table_length_2 = 160 // 表格长度
 const table_length_3 = 160 // 表格长度
 
-const max_total_3 = 20 // 表格三最大统计值 超过后归零
+const max_total_3 = 100 // 表格三最大统计值 超过后归零
+const max_total_3_2 = -100 // 表格三最大统计值 超过后归零
 const max_number = 256 // 表格一最大统计值 超过后归一
 const isShowOther = false // 表格是否显示中间列
 

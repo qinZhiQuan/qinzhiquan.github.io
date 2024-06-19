@@ -393,7 +393,7 @@
 
                         for (let i = 1; i <= column_length; i++) {
                             // 表格3 判断选择次数
-                            if (table_index == 3 && this.total_3 >= max_total_3) {
+                            if (table_index == 3 && (this.total_3 >= max_total_3 || this.total_3 <= max_total_3_2)) {
                                 // 选定自动归零
                                 if (!row[`del_${i}`] && row[i] == type) {
                                     this.setDel(this[`tableData_${table_index}`], row_index + 1, i, column_length)
