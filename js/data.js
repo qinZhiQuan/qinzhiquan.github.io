@@ -3,8 +3,9 @@ const title = "计数器系统" // 标题
 // 账号列表
 const accounts = [
     // { name: '11qsl33800', password: '11qsl146900' },
+    // { name: '11qsl33800', password: '11qsl146900' },
     // { name: '11qsl88008', password: '11qsl146900' },
-    // { name: '11qsl88008', password: '11qsl15900' },
+    { name: 'ds880088', password: 'dx880088' },
 ]
 const bg = './assets/bg.png' // 背景图 
 const bgColor = 'rgba(70,130,180, 0.4)' // 背景色
